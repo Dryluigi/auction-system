@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  db:
+    image: mysql
+    expose:
+      - 3306
+    ports:
+      - 3307:3306
+    container_name: bid-session-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: auction-system
+      MYSQL_USER: mario
+      MYSQL_PASSWORD: mario
+      TZ: Asia/Jakarta
+  web:
+    build:
+      context: dockerfiles/.
+      dockerfile: dev.Dockerfile
+    container_name: auction-system-api
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    volumes:
+      - ./:/app
+    environment:
+      TZ: Asia/Jakarta
